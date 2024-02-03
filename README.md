@@ -1,6 +1,6 @@
 
 
-### This repo to demonstrate:
+### This Repo Demonstrate:
 1. how to compile c++ function with boost/gsl into WASM and run in node.js.
 2. how to pass arrays between C++ and JS
 
