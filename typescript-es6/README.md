@@ -26,3 +26,6 @@ remember to enable JS in typescript config:
   "allowJS":true
 }
 ```
+
+Reference:
+1. https://stackoverflow.com/questions/53309095/how-load-an-emscripten-generated-module-with-es6-import
