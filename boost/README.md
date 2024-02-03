@@ -1,13 +1,15 @@
+### Demonstrate how to use boost in WASM
 
 
-Generate `api_example.js` and `api_example.wasm`
+
+Generate `example.js` and `example.wasm`
 ```
-emcc api_example.cpp -o api_example.js -sMODULARIZE -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
+emcc example.cpp -o example.js -sMODULARIZE -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
 ```
 
-if dont want to use `ccall` or `cwrap` in js
+if you don't want to use `ccall` or `cwrap` in js
 ```
-emcc api_example.cpp -o api_example.js -sMODULARIZE -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
+emcc example.cpp -o example.js -sMODULARIZE -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
 ```
 
 test:

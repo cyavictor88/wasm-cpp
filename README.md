@@ -1,7 +1,8 @@
 
 
-This repo serves to demonstrate how to compile c++ function with boost/gsl into WASM and run in node.js. 
-Also shows how to pass array from js to cpp and get returned array from cpp to js.
+###This repo to demonstrate:
+1. how to compile c++ function with boost/gsl into WASM and run in node.js.
+2. how to pass arrays between C++ and JS
 
 
 Prerequisite: 

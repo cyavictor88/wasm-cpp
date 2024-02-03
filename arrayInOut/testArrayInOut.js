@@ -4,28 +4,11 @@ var factory = require('./example.js');
 
 factory().then((wasmInstance) => {
 
-  // simple function without paramenter
-  console.log('daysInWeek:',wasmInstance._daysInWeek()); // values can be returned, etc.
-
-
-  const res = wasmInstance._mypow(2,4); // direct calling works
-  console.log('result 1: calling mypow,',res);
-
-  // # using ccall
-  // const res2 = wasmInstance.ccall("mypow",'number',['number','number'], [3,2]); // using ccall etc. also work
-  // console.log('result 2',res2);
-
-  // # using cwrap
-  // const mypower = wasmInstance.cwrap('mypow', // name of C function
-  // 'number', // return type
-  // ['number', 'number']); // ar
-  // const res3 = mypower(5,2);
-  // console.log('result 3',res3);
-
 
   // testing getting array from cpp
-  const cppOutputArrPointer = wasmInstance._createIntArray(5); 
-  const js_output_array = new Uint32Array(wasmInstance.HEAP32.buffer, cppOutputArrPointer, 5);
+  const arrLen = 5;
+  const cppOutputArrPointer = wasmInstance._getCPPArray(arrLen); 
+  var js_output_array = new Uint32Array(wasmInstance.HEAP32.buffer, cppOutputArrPointer, arrLen);
   console.log('returned i32 array from cpp:',js_output_array);
 
 
@@ -49,11 +32,29 @@ factory().then((wasmInstance) => {
   wasmInstance[type.heap].set(typedArray, heapPointer >> 2);
 
   // Call the WebAssembly function with the integer array
-  const resArr = wasmInstance._powArr(heapPointer, jsInputArr.length);
-  console.log("result of using powArr function", resArr);
+  const sum = wasmInstance._sumJSArray(heapPointer, jsInputArr.length);
+  console.log("result of sum of",jsInputArr,'=',sum);
 
   // Free the allocated memory
   wasmInstance._free(heapPointer);
+
+
+  // testing In Out with arrays
+
+  // Allocate memory for the integer array
+  const heapPointer2 = wasmInstance._malloc(typedArray.length * typedArray.BYTES_PER_ELEMENT);
+  wasmInstance[type.heap].set(typedArray, heapPointer2 >> 2);
+
+  // Call the WebAssembly function with the integer array
+  const cppOutputArrPointer2 = wasmInstance._inOutArray(heapPointer2, jsInputArr.length); 
+  const js_output_array2 = new Uint32Array(wasmInstance.HEAP32.buffer, cppOutputArrPointer2,  jsInputArr.length);
+  console.log('returned i32 array from cpp:',js_output_array2);
+  // Free the allocated memory
+  wasmInstance._free(heapPointer2);
+
+
+
+
 
 
 });
