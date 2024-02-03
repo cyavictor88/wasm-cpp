@@ -1,4 +1,4 @@
-### To use the generated module with ES6 or in TypeSscript 
+### To use the generated module with ES6 or TypeSscript 
 
 
 I will use the same example.cpp in /boost as example:
