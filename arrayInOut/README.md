@@ -8,7 +8,7 @@ emcc example.cpp -o example.js -sMODULARIZE -s "EXPORTED_FUNCTIONS=['_free','_ma
 ```
 
 
-test:
+Test:
 ```
 node testArrayInOut.js
 ```

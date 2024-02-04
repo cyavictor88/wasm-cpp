@@ -2,7 +2,7 @@
 
 
 
-generate gls.js and gsl.wasm to used by testGSL.js
+Generate `gls.js` and `gsl.wasm` to be used by testGSL.js
 
 ```
 git clone https://github.com/ampl/gsl
@@ -16,7 +16,7 @@ emcc -g -O2 -o .libs/gsl.js -s MODULARIZE -s EXPORTED_RUNTIME_METHODS=\[ccall\] 
 
 
 
-test:
+Test:
 
 ```
 cd ../

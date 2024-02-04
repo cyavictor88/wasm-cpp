@@ -1,7 +1,7 @@
 ### Demonstrate how to use gsl in cpp wasm
 
-Generate `example.js` and `example.wasm`
 
+Compile gsl:
 ```
 git clone https://github.com/ampl/gsl
 cd gsl
@@ -10,11 +10,16 @@ emconfigure ./configure && emmake make
 ```
 (you will see errors about **duplicate symbol**, but that's ok, as long as **./.libs/libgsl.so.25** is produced)
 
-to test:
-
+Generate `example.js` and `example.wasm`:
 ```
 cd ../
 emcc ./gsl/.libs/libgsl.so.25  example.cpp -I ./gsl -lm -o example.js -sMODULARIZE
+```
+
+
+Test:
+
+```
 node testGSL.js
 ```
 

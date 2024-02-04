@@ -7,12 +7,12 @@ Generate `example.js` and `example.wasm`
 emcc example.cpp -o example.js -sMODULARIZE -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
 ```
 
-if you don't want to use `ccall` or `cwrap` in js
+if you don't want to use `ccall` or `cwrap` in js:
 ```
 emcc example.cpp -o example.js -sMODULARIZE -sUSE_BOOST_HEADERS=1 -s "EXPORTED_FUNCTIONS=['_free','_malloc']"
 ```
 
-test:
+Test:
 ```
 node testBoost.js
 ```
