@@ -11,11 +11,18 @@ emconfigure ./configure && emmake make
 (you will see errors about **duplicate symbol**, but that's ok, as long as **./.libs/libgsl.so.25** is produced)
 
 Generate `example.js` and `example.wasm`:
+
+for Ubuntu:
 ```
 cd ../
 emcc ./gsl/.libs/libgsl.so.25  example.cpp -I ./gsl -lm -o example.js -sMODULARIZE
 ```
 
+for MacOS:
+```
+cd ../
+emcc ./gsl/.libs/libgsl.25.dylib  example.cpp -I ./gsl -lm -o example.js -sMODULARIZE
+```
 
 Test:
 
