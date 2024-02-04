@@ -1,7 +1,7 @@
 ### Demonstrate how to use gsl in cpp wasm, and pass js function into cpp to take integral with gsl
 
 
-Once you have compiled gsl with emscripten:
+Once you have compiled gsl source code with emscripten (see ../REAME.md):
 
 Generate `example.js` and `example.wasm`:
 
