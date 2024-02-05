@@ -18,4 +18,6 @@ node testBoost.js
 ```
 Reference: 
 1. https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#calling-compiled-c-functions-from-javascript-using-ccall-cwrap
-2. https://stackoverflow.com/questions/71681491/passing-arrays-and-objects-from-javascript-to-c-in-web-assembly
+2. https://emscripten.org/docs/compiling/Building-Projects.html#using-libraries
+3. https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
+4. https://stackoverflow.com/questions/71681491/passing-arrays-and-objects-from-javascript-to-c-in-web-assembly
