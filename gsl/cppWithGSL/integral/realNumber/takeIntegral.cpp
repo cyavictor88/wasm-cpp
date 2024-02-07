@@ -24,7 +24,7 @@ extern "C" {
     // double f = log(alpha*x) / sqrt(x);
     // return f;
 
-    // us function from passed in from js
+    // use function from passed in from js
     return funcFromJS(x);
   }
 
