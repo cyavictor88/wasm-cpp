@@ -4,11 +4,18 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_complex.h>
 #include <gsl/gsl_complex_math.h>
+#include <gsl/gsl_errno.h>
 #include <emscripten/emscripten.h>
 
 struct FuncParams {             
   double wk;     
   bool getReal;  
+} ; 
+
+struct Result {             
+  double real;     
+  double img;     
+  bool fail;  
 } ; 
 
 extern "C" {
@@ -36,7 +43,7 @@ extern "C" {
   }
 
   EMSCRIPTEN_KEEPALIVE
-  double* approxFourierSeries(double lower_bound, double upper_bound, double period, double k)
+  Result* approxFourierSeries(double lower_bound, double upper_bound, double period, double k)
   {
 
     double wk = (2 * M_PI / period) * k;
@@ -52,25 +59,38 @@ extern "C" {
     // params[1] = 1.0;
 
     FuncParams params = {wk, true};
+    
     gsl_function Func;
     Func.function = &func;
     Func.params = &params;
 
-    gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    Result* resultPtr = new Result;
+    resultPtr->real = 0.0;
+    resultPtr->img = 0.0;
+    resultPtr->fail = false;
+
+    int status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    if(status != GSL_SUCCESS){
+      resultPtr->fail = true;
+      return resultPtr;
+    }
     double resultReal = result/period;
     double errorReal = error;
 
     params.getReal = false;
-    gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    if(status != GSL_SUCCESS){
+      resultPtr->fail = true;
+      return resultPtr;
+    }
     double resultImg  =  result/period;
     double errorImg =  error;
 
     gsl_integration_workspace_free(work_space);
 
-    double* complexResult = new double[2];
-    complexResult[0] = resultReal;
-    complexResult[1] = resultImg;
-    return complexResult;
+    resultPtr->real = resultReal;
+    resultPtr->img = resultImg;
+    return resultPtr;
   }
 
 }
