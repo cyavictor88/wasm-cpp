@@ -8,7 +8,6 @@
 
 extern "C" {
 
-  EMSCRIPTEN_KEEPALIVE
   double funcRealFromJS(double x, double w) {
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
     const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // -iwx
@@ -43,7 +42,6 @@ extern "C" {
     return (double) GSL_IMAG(expo_times_f_of_x);
   }
 
-  EMSCRIPTEN_KEEPALIVE
   double fReal (double x, void * params) {
     // some function written in c 
     double w = *(double *) params;
@@ -54,7 +52,6 @@ extern "C" {
     return funcRealFromJS(x,w);
   }
 
-  EMSCRIPTEN_KEEPALIVE
   double fImg (double x, void * params) {
     // some function written in c 
     double w = *(double *) params;
