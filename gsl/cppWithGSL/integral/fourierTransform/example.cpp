@@ -23,13 +23,13 @@ extern "C" {
     bool getReal = p->getReal;
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
     const gsl_complex negative_w_x_times_i = gsl_complex_mul_real(I,  -1 * w * x); 
-    const gsl_complex expo = gsl_complex_exp(negative_w_x_times_i); // e^(-i * w *x)
+    const gsl_complex expo = gsl_complex_exp(negative_w_x_times_i); // e^(-iwx)
   
     double f_of_x = EM_ASM_DOUBLE({
         // Use the exported JavaScript function
         return Module.jsFunc($0);
     }, x);
-    const gsl_complex expo_times_f_of_x = gsl_complex_mul_real(expo, f_of_x); // f(x) * e^(i * w )
+    const gsl_complex expo_times_f_of_x = gsl_complex_mul_real(expo, f_of_x); // f(x) * e^(-iwx)
     
     if(getReal) return (double) GSL_REAL(expo_times_f_of_x);
     return (double) GSL_IMAG(expo_times_f_of_x);
@@ -64,10 +64,10 @@ extern "C" {
 
     gsl_integration_workspace_free(work_space);
 
-    double* output = new double[2];
-    output[0] = resultReal;
-    output[1] = resultImg;
-    return output;
+    double* complexResult = new double[2];
+    complexResult[0] = resultReal;
+    complexResult[1] = resultImg;
+    return complexResult;
   }
 
 }
