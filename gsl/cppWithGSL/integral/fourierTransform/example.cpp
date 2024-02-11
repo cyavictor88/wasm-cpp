@@ -11,8 +11,8 @@ extern "C" {
   EMSCRIPTEN_KEEPALIVE
   double funcRealFromJS(double x, double w) {
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
-    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // x * w
-    const gsl_complex expo = gsl_complex_exp(negative_wx_times_i); // e^(i * w * x)
+    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // -iwx
+    const gsl_complex expo = gsl_complex_exp(negative_wx_times_i); // e^(i * -wx)
   
 
     // Call the JavaScript function from C++
@@ -21,7 +21,7 @@ extern "C" {
         return Module.jsFunc($0);
     }, x);
 
-    const gsl_complex expo_times_f_of_x = gsl_complex_mul_real(expo, f_of_x); // f(x) * e^(i * w)
+    const gsl_complex expo_times_f_of_x = gsl_complex_mul_real(expo, f_of_x); // f(x) * e^(i * -wx)
     
     // std::cout << "(x,y) =(" << x <<","<< f_of_x << ")\n";
     return (double) GSL_REAL(expo_times_f_of_x);
@@ -29,7 +29,7 @@ extern "C" {
 
   double funcImgFromJS(double x, double w){
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
-    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // x * w
+    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // -
     const gsl_complex expo = gsl_complex_exp(negative_wx_times_i); // e^(i * w * x)
   
     double f_of_x = EM_ASM_DOUBLE({
