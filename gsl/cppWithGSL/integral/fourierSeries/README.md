@@ -19,7 +19,7 @@ emcc [path/to/built/gsl]/.libs/libgsl.25.dylib  example.cpp -I [path/to/built/gs
 Test:
 
 ```
-node testFourierTransform.js
+node testFourierSeries.js
 ```
 
 
