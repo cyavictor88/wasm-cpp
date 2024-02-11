@@ -11,8 +11,8 @@ extern "C" {
   EMSCRIPTEN_KEEPALIVE
   double funcRealFromJS(double x, double w) {
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
-    const gsl_complex wx_times_i = gsl_complex_mul_real(I,  w*x); // x * w
-    const gsl_complex expo = gsl_complex_exp(wx_times_i); // e^(i * w * x)
+    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // x * w
+    const gsl_complex expo = gsl_complex_exp(negative_wx_times_i); // e^(i * w * x)
   
 
     // Call the JavaScript function from C++
@@ -29,8 +29,8 @@ extern "C" {
 
   double funcImgFromJS(double x, double w){
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
-    const gsl_complex wx_times_i = gsl_complex_mul_real(I,  w*x); // x * w
-    const gsl_complex expo = gsl_complex_exp(wx_times_i); // e^(i * w * x)
+    const gsl_complex negative_wx_times_i = gsl_complex_mul_real(I,  -1 * w * x); // x * w
+    const gsl_complex expo = gsl_complex_exp(negative_wx_times_i); // e^(i * w * x)
   
     double f_of_x = EM_ASM_DOUBLE({
         // Use the exported JavaScript function
