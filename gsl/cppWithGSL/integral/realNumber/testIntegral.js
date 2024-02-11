@@ -8,5 +8,5 @@ factory().then((instance) => {
   }
   instance['jsFunc'] = functionToIntegrate;
   const res = instance._takeIntegral(lowerBound,upperBound); // direct calling works
-  console.log('result in JS:', res);
+  console.log('result:', res);
 });

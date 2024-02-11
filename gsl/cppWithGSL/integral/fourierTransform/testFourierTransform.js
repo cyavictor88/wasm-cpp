@@ -14,20 +14,20 @@ factory().then((instance) => {
   }
 
   function functionToIntegrate(x) {
-    return Math.sin(x) ;
+    return Math.cos(x) ;
   }
   instance['jsFunc'] = functionToIntegrate;
-
 
   for (let i = 0; i < ws.length; i++) {
     const w = ws[i];
     const res = instance._approxFourierTransform(lowerBound,upperBound,w); // direct calling works
-    const js_output_array = new Float64Array(instance.HEAPF64.buffer, res, 2);
-    const real = js_output_array[0];
-    const img = js_output_array[1];
+    const outputArr = new Float64Array(instance.HEAPF64.buffer, res, 2);
+    const real = outputArr[0];
+    const img = outputArr[1];
     const mag = (real**2 + img **2)**0.5
     const phase = 180*Math.atan(img/real) /Math.PI
-    console.log(w,'=>',js_output_array, 'mag',mag,'phase',phase);
-
+    console.log('w:',w,'=>',outputArr, 'mag',mag,'phase',phase);
+  
   }
+
 });

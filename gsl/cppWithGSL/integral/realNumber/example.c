@@ -4,7 +4,6 @@
 #include <emscripten/emscripten.h>
 
 
-EMSCRIPTEN_KEEPALIVE
 double funcFromJS(double x) {
   // Call the JavaScript function from C
   double result = EM_ASM_DOUBLE({
@@ -14,7 +13,6 @@ double funcFromJS(double x) {
   return result;
 }
 
-EMSCRIPTEN_KEEPALIVE
 double f (double x, void * params) {
   // some function written in c 
   // double alpha = *(double *) params;
