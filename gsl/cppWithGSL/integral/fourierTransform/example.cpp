@@ -5,11 +5,8 @@
 #include <gsl/gsl_complex.h>
 #include <gsl/gsl_complex_math.h>
 #include <emscripten/emscripten.h>
-
-struct FuncParams {             
-  double w;     
-  bool getReal;  
-} ; 
+#include <gsl/gsl_errno.h>
+#include "fourier.h"
 
 extern "C" {
   double func(double x, void * params) {
@@ -18,7 +15,7 @@ extern "C" {
     // double w = array[0];
     // double getReal = array[1];
 
-    FuncParams *p = static_cast<FuncParams*>(params);
+    FTParams *p = static_cast<FTParams*>(params);
     double w = p->w;
     bool getReal = p->getReal;
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
@@ -33,14 +30,17 @@ extern "C" {
     
     if(getReal) return (double) GSL_REAL(expo_times_f_of_x);
     return (double) GSL_IMAG(expo_times_f_of_x);
+
+    // return f_of_x;
   }
 
   EMSCRIPTEN_KEEPALIVE
-  double* approxFourierTransform(double lower_bound, double upper_bound, double w)
+  Result* approxFourierTransform(double lower_bound, double upper_bound, double w)
   {
     gsl_integration_workspace *work_space = gsl_integration_workspace_alloc (1000);
-    double eps_abs = 1e-7;
-    double eps_rel = 1e-7;
+    double eps_rel =1e-7;
+    
+    double eps_abs =  1e-7;
     double result, error;
 
     // if you want to pass a double array as param for function
@@ -48,26 +48,45 @@ extern "C" {
     // params[0] = w;
     // params[1] = 1.0;
 
-    FuncParams params = {w, true};
+    FTParams params = {w, true};
     gsl_function Func;
     Func.function = &func;
     Func.params = &params;
 
-    gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    Result* resultPtr = new Result;
+    resultPtr->real = 0.0;
+    resultPtr->img = 0.0;
+    resultPtr->fail = false;
+    int status = 0;
+    // definite integral
+    status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    // indefinite integral
+    // status = gsl_integration_qagi(&Func, eps_abs, eps_rel, work_space->limit, work_space, &result, &error); 
+    if(status != GSL_SUCCESS){
+      resultPtr->fail = true;
+      return resultPtr;
+    }
     double resultReal = result;
     double errorReal = error;
 
     params.getReal = false;
-    gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
-    double resultImg  =  result;
+    // definite integral
+    status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    // indefinite integral
+    // gsl_integration_qawf
+    // status = gsl_integration_qagi(&Func, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    if(status != GSL_SUCCESS){
+      resultPtr->fail = true;
+      return resultPtr;
+    }
+    double resultImg  = result;
     double errorImg =  error;
 
     gsl_integration_workspace_free(work_space);
 
-    double* complexResult = new double[2];
-    complexResult[0] = resultReal;
-    complexResult[1] = resultImg;
-    return complexResult;
+    resultPtr->real = resultReal;
+    resultPtr->img = resultImg;
+    return resultPtr;
   }
 
 }

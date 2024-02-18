@@ -13,7 +13,7 @@ emcc [path/to/built/gsl]/.libs/libgsl.so.25  example.cpp -I [path/to/built/gsl] 
 for MacOS:
 ```
 cd ../
-emcc [path/to/built/gsl]/.libs/libgsl.25.dylib  example.cpp -I [path/to/built/gsl] -lm -o example.js -sMODULARIZE
+emcc [path/to/built/gsl]/.libs/libgsl.25.dylib  example.cpp -I [path/to/built/gsl] -I ../include/ -lm -o example.js -sMODULARIZE
 ```
 
 Test:

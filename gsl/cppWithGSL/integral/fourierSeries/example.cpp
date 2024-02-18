@@ -6,17 +6,7 @@
 #include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_errno.h>
 #include <emscripten/emscripten.h>
-
-struct FuncParams {             
-  double wk;     
-  bool getReal;  
-} ; 
-
-struct Result {             
-  double real;     
-  double img;     
-  bool fail;  
-} ; 
+#include "fourier.h"
 
 extern "C" {
   double func(double x, void * params) {
@@ -25,7 +15,7 @@ extern "C" {
     // double wk = array[0];
     // double getReal = array[1];
 
-    FuncParams *p = static_cast<FuncParams*>(params);
+    FSParams *p = static_cast<FSParams*>(params);
     double wk = p->wk;
     bool getReal = p->getReal;
     const gsl_complex I = gsl_complex_rect(0.0, 1.0); // Imaginary unit
@@ -58,7 +48,7 @@ extern "C" {
     // params[0] = wk;
     // params[1] = 1.0;
 
-    FuncParams params = {wk, true};
+    FSParams params = {wk, true};
     
     gsl_function Func;
     Func.function = &func;
@@ -69,7 +59,7 @@ extern "C" {
     resultPtr->img = 0.0;
     resultPtr->fail = false;
 
-    int status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    int status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel,  work_space->limit, work_space, &result, &error); 
     if(status != GSL_SUCCESS){
       resultPtr->fail = true;
       return resultPtr;
@@ -78,7 +68,7 @@ extern "C" {
     double errorReal = error;
 
     params.getReal = false;
-    status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel, 1000, work_space, &result, &error); 
+    status = gsl_integration_qags(&Func, lower_bound, upper_bound, eps_abs, eps_rel,  work_space->limit, work_space, &result, &error); 
     if(status != GSL_SUCCESS){
       resultPtr->fail = true;
       return resultPtr;

@@ -45,6 +45,8 @@ extern "C" {
     printf ("exact result    = % .18f\n", expected);
     printf ("estimated error = % .18f\n", error);
     printf ("intervals =  %d\n", work_space->size);
+    
+    gsl_integration_workspace_free(work_space);
 
     return result;
   }
