@@ -2,3 +2,4 @@ gsl/cppWithGSL/gsl/
 example.js
 example.wasm
 vicreadme
+.DS_Store

@@ -36,7 +36,7 @@ async function getFS(functionToIntegrate, maxK, lowerBound, upperBound) {
         if (k == 0) {
           console.log(`a${k}:`, ((real) / period).toFixed(4));
           ak.push((real) / period);
-          bk.push(false);
+          bk.push(0);
         }
         // console.log('k:',k,'=>','mag',parseFloat(mag.toFixed(5))/(2*period),'phase',parseFloat(phase.toFixed(5)));
         else {

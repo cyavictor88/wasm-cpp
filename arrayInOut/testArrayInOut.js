@@ -29,7 +29,7 @@ factory().then((wasmInstance) => {
   const typedArray = type.array.from(jsInputArr);
   // Allocate memory for the integer array
   const heapPointer = wasmInstance._malloc(typedArray.length * typedArray.BYTES_PER_ELEMENT);
-  wasmInstance[type.heap].set(typedArray, heapPointer >> 2);
+  wasmInstance[type.heap].set(typedArray, heapPointer >> 2);  
 
   // Call the WebAssembly function with the integer array
   const sum = wasmInstance._sumJSArray(heapPointer, jsInputArr.length);
