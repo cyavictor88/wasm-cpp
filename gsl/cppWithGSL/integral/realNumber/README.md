@@ -27,3 +27,9 @@ node testIntegral.js
 
 Reference:
 1. chatGPT
+
+
+
+use in vicssd:
+
+emcc ~/schoolingerscat/wasm/gsl/.libs/libgsl.so.25 example.cpp -I ~/schoolingerscat/wasm/gsl/ -lm -o gsl_integration_qags.js -sMODULARIZE -s EXPORT_ES6=1 -s EXPORT_NAME="integral"
